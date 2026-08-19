@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WM Tattoo Studio — Mais que tinta é vida na pele</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ink:#100f0d;
+  --ink-2:#171612;
+  --charcoal:#2c2e27;
+  --charcoal-2:#383a31;
+  --gold:#c6a15b;
+  --gold-light:#e9d3a3;
+  --gold-dim:#8a6f3d;
+  --terracotta:#b5794a;
+  --terracotta-dark:#8a5a34;
+  --bone:#f4eee2;
+  --bone-dim:#cfc6b3;
+  --blood:#7a2323;
+  --line:rgba(198,161,91,0.22);
+  --shadow:0 30px 60px -20px rgba(0,0,0,.6);
+  --ease:cubic-bezier(.16,.8,.24,1);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--ink);
+  color:var(--bone);
+  font-family:'Jost',sans-serif;
+  font-weight:300;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+img{display:block; max-width:100%;}
+a{color:inherit; text-decoration:none;}
+h1,h2,h3,h4{font-family:'Cinzel',serif; font-weight:600; letter-spacing:.02em; color:var(--bone);}
+.eyebrow{
+  font-family:'Jost',sans-serif; text-transform:uppercase; letter-spacing:.28em;
+  font-size:.72rem; color:var(--gold); font-weight:500;
+}
+.container{max-width:1240px; margin:0 auto; padding:0 32px;}
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:15px 30px; border-radius:2px; font-family:'Jost',sans-serif;
+  font-size:.82rem; text-transform:uppercase; letter-spacing:.14em; font-weight:500;
+  cursor:pointer; border:1px solid transparent; transition:all .35s var(--ease);
+}
+.btn-gold{background:var(--gold); color:var(--ink); border-color:var(--gold);}
+.btn-gold:hover{background:var(--gold-light); border-color:var(--gold-light); transform:translateY(-2px);}
+.btn-ghost{background:transparent; color:var(--bone); border-color:rgba(244,238,226,.35);}
+.btn-ghost:hover{border-color:var(--gold); color:var(--gold); transform:translateY(-2px);}
+.btn svg{width:16px; height:16px;}
+
+/* diamond monogram - signature element */
+.diamond{
+  position:relative; width:1em; height:1em; display:inline-block;
+}
+.diamond-badge{
+  width:56px; height:56px; border:1.5px solid var(--gold); transform:rotate(45deg);
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.diamond-badge span{transform:rotate(-45deg); font-family:'Cinzel',serif; color:var(--gold); font-weight:700; font-size:1.1rem;}
+.diamond-badge.small{width:38px; height:38px;}
+.diamond-badge.small span{font-size:.78rem;}
+
+/* brick-weave divider - signature texture from the studio's real accent wall */
+.brick-divider{
+  height:34px; width:100%;
+  background:
+    repeating-linear-gradient(135deg, var(--terracotta) 0 9px, var(--terracotta-dark) 9px 18px),
+    repeating-linear-gradient(45deg, var(--terracotta) 0 9px, var(--terracotta-dark) 9px 18px);
+  background-blend-mode:multiply;
+  opacity:.9;
+}
+.section-label{
+  display:flex; align-items:center; gap:16px; margin-bottom:18px;
+}
+.section-label .rule{height:1px; width:44px; background:var(--gold);}
+
+section{position:relative;}
+.pad{padding:120px 0;}
+@media(max-width:768px){.pad{padding:76px 0;}}
+
+/* ============ HEADER ============ */
+header{
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  background:rgba(16,15,13,0);
+  border-bottom:1px solid transparent;
+  transition:background .4s var(--ease), border-color .4s var(--ease), padding .4s var(--ease);
+  padding:26px 0;
+}
+header.scrolled{
+  background:rgba(16,15,13,.92);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+  padding:14px 0;
+}
+header .container{display:flex; align-items:center; justify-content:space-between; gap:20px;}
+.logo{display:flex; align-items:center; gap:12px;}
+.logo-mark{
+  width:42px; height:42px; border:1.5px solid var(--gold); transform:rotate(45deg);
+  display:flex; align-items:center; justify-content:center;
+}
+.logo-mark span{transform:rotate(-45deg); font-family:'Cinzel',serif; font-weight:700; color:var(--gold); font-size:.92rem;}
+.logo-text{font-family:'Cinzel',serif; font-size:1rem; letter-spacing:.08em;}
+.logo-text small{display:block; font-family:'Jost',sans-serif; font-size:.58rem; letter-spacing:.24em; color:var(--bone-dim); text-transform:uppercase; margin-top:2px;}
+
+nav.main-nav{display:flex; gap:38px;}
+nav.main-nav a{
+  font-size:.78rem; text-transform:uppercase; letter-spacing:.14em; color:var(--bone-dim);
+  position:relative; padding-bottom:4px; transition:color .3s;
+}
+nav.main-nav a:hover{color:var(--gold);}
+nav.main-nav a::after{
+  content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--gold);
+  transition:width .3s var(--ease);
+}
+nav.main-nav a:hover::after{width:100%;}
+
+.header-icons{display:flex; align-items:center; gap:18px;}
+.icon-btn{
+  width:38px; height:38px; border:1px solid rgba(244,238,226,.28); border-radius:50%;
+  display:flex; align-items:center; justify-content:center; transition:all .3s var(--ease);
+}
+.icon-btn svg{width:16px; height:16px; stroke:var(--bone);}
+.icon-btn:hover{border-color:var(--gold); background:rgba(198,161,91,.1);}
+.icon-btn:hover svg{stroke:var(--gold);}
+.burger{display:none; flex-direction:column; gap:5px; cursor:pointer; width:26px; z-index:210;}
+.burger span{height:1.5px; background:var(--bone); width:100%; transition:.3s;}
+.burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+.mobile-nav{
+  position:fixed; inset:0; background:var(--ink-2); z-index:190;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:30px;
+  transform:translateY(-100%); transition:transform .5s var(--ease);
+}
+.mobile-nav.open{transform:translateY(0);}
+.mobile-nav a{font-family:'Cinzel',serif; font-size:1.4rem; color:var(--bone); letter-spacing:.05em;}
+.mobile-nav a:hover{color:var(--gold);}
+
+@media(max-width:980px){
+  nav.main-nav{display:none;}
+  .burger{display:flex;}
+}
+
+/* ============ HERO ============ */
+.hero{
+  min-height:100vh; position:relative; display:flex; align-items:flex-end;
+  padding-bottom:110px;
+}
+.hero-bg{
+  position:absolute; inset:0; z-index:0;
+}
+.hero-bg img{width:100%; height:100%; object-fit:cover; object-position:60% 30%;}
+.hero-bg::after{
+  content:''; position:absolute; inset:0;
+  background:
+    linear-gradient(0deg, var(--ink) 4%, rgba(16,15,13,.55) 45%, rgba(16,15,13,.35) 70%),
+    linear-gradient(100deg, rgba(16,15,13,.86) 10%, rgba(16,15,13,.2) 55%);
+}
+.hero-content{position:relative; z-index:2; max-width:760px;}
+.hero-content .eyebrow{display:flex; align-items:center; gap:14px; margin-bottom:26px;}
+.hero-content .eyebrow::before{content:''; width:34px; height:1px; background:var(--gold);}
+.hero h1{
+  font-size:clamp(2.4rem,5.6vw,4.6rem); line-height:1.06; margin-bottom:26px;
+  text-wrap:balance;
+}
+.hero h1 em{font-style:italic; color:var(--gold-light); font-weight:500;}
+.hero p.lead{
+  font-size:1.05rem; color:var(--bone-dim); max-width:540px; margin-bottom:20px; font-weight:300;
+}
+.hero-services{
+  display:flex; flex-wrap:wrap; gap:10px 28px; margin-bottom:40px;
+}
+.hero-services span{
+  font-size:.76rem; text-transform:uppercase; letter-spacing:.12em; color:var(--bone-dim);
+  display:flex; align-items:center; gap:8px;
+}
+.hero-services span::before{content:''; width:5px; height:5px; background:var(--gold); border-radius:50%;}
+.hero-actions{display:flex; gap:16px; flex-wrap:wrap;}
+.hero-scroll{
+  position:absolute; right:40px; bottom:36px; z-index:2; display:flex; flex-direction:column;
+  align-items:center; gap:10px;
+}
+.hero-scroll span{
+  writing-mode:vertical-rl; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--bone-dim);
+}
+.hero-scroll .line{width:1px; height:52px; background:linear-gradient(var(--gold), transparent); animation:scrollpulse 2.2s ease-in-out infinite;}
+@keyframes scrollpulse{0%,100%{opacity:.3;} 50%{opacity:1;}}
+@media(max-width:768px){
+  .hero{padding-bottom:70px;}
+  .hero-scroll{display:none;}
+}
+
+/* ============ ESTÚDIO ============ */
+.estudio{background:var(--ink);}
+.estudio-intro{
+  display:grid; grid-template-columns:1.1fr 1fr; gap:70px; align-items:end; margin-bottom:60px;
+}
+.estudio-intro h2{font-size:clamp(1.9rem,3.4vw,2.8rem); line-height:1.15;}
+.estudio-intro p{color:var(--bone-dim); font-size:.98rem;}
+@media(max-width:860px){.estudio-intro{grid-template-columns:1fr; gap:24px;}}
+
+.estudio-grid{
+  display:grid; grid-template-columns:repeat(6,1fr); grid-auto-rows:120px; gap:14px;
+}
+.estudio-grid figure{
+  position:relative; overflow:hidden; cursor:pointer; border-radius:2px;
+  background:var(--charcoal);
+}
+.estudio-grid figure img{
+  width:100%; height:100%; object-fit:cover; transition:transform .7s var(--ease), filter .5s;
+  filter:grayscale(.15) brightness(.92);
+}
+.estudio-grid figure:hover img{transform:scale(1.08); filter:grayscale(0) brightness(1);}
+.estudio-grid figure::before{
+  content:''; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(0deg, rgba(16,15,13,.86) 0%, rgba(16,15,13,0) 46%);
+  opacity:.55; transition:opacity .4s;
+}
+.estudio-grid figure:hover::before{opacity:.9;}
+.estudio-grid figcaption{
+  position:absolute; left:16px; right:16px; bottom:12px; z-index:2;
+  font-size:.72rem; letter-spacing:.06em; color:var(--bone);
+  opacity:0; transform:translateY(8px); transition:all .4s var(--ease);
+}
+.estudio-grid figure:hover figcaption{opacity:1; transform:translateY(0);}
+.estudio-grid figcaption b{display:block; font-family:'Cinzel',serif; font-weight:600; font-size:.86rem; color:var(--gold-light); margin-bottom:2px;}
+
+.g-a{grid-column:span 3; grid-row:span 3;}
+.g-b{grid-column:span 3; grid-row:span 2;}
+.g-c{grid-column:span 2; grid-row:span 2;}
+.g-d{grid-column:span 2; grid-row:span 3;}
+.g-e{grid-column:span 2; grid-row:span 2;}
+.g-f{grid-column:span 3; grid-row:span 2;}
+.g-g{grid-column:span 3; grid-row:span 2;}
+
+@media(max-width:860px){
+  .estudio-grid{grid-template-columns:repeat(2,1fr); grid-auto-rows:150px;}
+  .g-a,.g-b,.g-c,.g-d,.g-e,.g-f,.g-g{grid-column:span 1; grid-row:span 2;}
+}
+
+/* lightbox */
+.lightbox{
+  position:fixed; inset:0; z-index:300; background:rgba(10,9,8,.94);
+  display:flex; align-items:center; justify-content:center; padding:40px;
+  opacity:0; pointer-events:none; transition:opacity .35s var(--ease);
+}
+.lightbox.open{opacity:1; pointer-events:all;}
+.lightbox img{max-width:min(920px,88vw); max-height:80vh; object-fit:contain; box-shadow:var(--shadow);}
+.lightbox-cap{position:absolute; bottom:34px; left:0; right:0; text-align:center; font-size:.82rem; color:var(--bone-dim);}
+.lightbox-cap b{color:var(--gold-light); font-family:'Cinzel',serif;}
+.lightbox-close{
+  position:absolute; top:30px; right:36px; width:44px; height:44px; border:1px solid rgba(244,238,226,.3);
+  border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.lightbox-close svg{width:18px; height:18px;}
+.lightbox-nav{
+  position:absolute; top:50%; transform:translateY(-50%); width:46px; height:46px; border-radius:50%;
+  border:1px solid rgba(244,238,226,.3); display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.lightbox-nav.prev{left:24px;} .lightbox-nav.next{right:24px;}
+.lightbox-nav svg{width:18px; height:18px;}
+
+/* ============ SERVIÇOS ============ */
+.servicos{background:var(--ink-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.servicos-head{
+  display:flex; justify-content:space-between; align-items:flex-end; gap:40px; margin-bottom:50px; flex-wrap:wrap;
+}
+.servicos-head h2{font-size:clamp(1.9rem,3.4vw,2.8rem);}
+
+.pro-tabs{display:flex; gap:14px; margin-bottom:44px; flex-wrap:wrap;}
+.pro-tab{
+  display:flex; align-items:center; gap:14px; padding:14px 22px; border:1px solid rgba(244,238,226,.18);
+  cursor:pointer; transition:all .35s var(--ease); background:transparent;
+}
+.pro-tab .diamond-badge{width:34px; height:34px;}
+.pro-tab .diamond-badge span{font-size:.68rem;}
+.pro-tab-name{text-align:left;}
+.pro-tab-name b{display:block; font-family:'Cinzel',serif; font-size:.92rem; color:var(--bone);}
+.pro-tab-name small{font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; color:var(--bone-dim);}
+.pro-tab.active{border-color:var(--gold); background:rgba(198,161,91,.08);}
+.pro-tab.active .diamond-badge{border-color:var(--gold-light); background:rgba(198,161,91,.14);}
+
+.style-filters{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:36px;}
+.style-chip{
+  padding:8px 18px; font-size:.72rem; text-transform:uppercase; letter-spacing:.1em;
+  border:1px solid rgba(244,238,226,.2); color:var(--bone-dim); cursor:pointer; transition:all .3s;
+}
+.style-chip.active,.style-chip:hover{border-color:var(--gold); color:var(--gold-light);}
+
+.servicos-grid{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:18px;
+}
+@media(max-width:980px){.servicos-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.servicos-grid{grid-template-columns:1fr;}}
+.work-card{
+  position:relative; overflow:hidden; aspect-ratio:4/5; cursor:pointer;
+  opacity:0; transform:scale(.96); animation:cardIn .5s var(--ease) forwards;
+}
+@keyframes cardIn{to{opacity:1; transform:scale(1);}}
+.work-card img{width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease);}
+.work-card:hover img{transform:scale(1.06);}
+.work-card::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(0deg, rgba(16,15,13,.9) 0%, transparent 55%);
+}
+.work-card-info{position:absolute; left:14px; right:14px; bottom:12px; z-index:2;}
+.work-card-info b{font-family:'Cinzel',serif; font-size:.82rem; color:var(--gold-light); display:block;}
+.work-card-info small{font-size:.68rem; color:var(--bone-dim); text-transform:uppercase; letter-spacing:.08em;}
+
+.servicos-note{
+  margin-top:26px; font-size:.78rem; color:var(--bone-dim); font-style:italic; opacity:.75;
+}
+
+/* ============ SOBRE ============ */
+.sobre{background:var(--ink);}
+.sobre-grid{
+  display:grid; grid-template-columns:.9fr 1.1fr; gap:70px; align-items:center;
+}
+@media(max-width:900px){.sobre-grid{grid-template-columns:1fr; gap:40px;}}
+.sobre-imgwrap{position:relative;}
+.sobre-imgwrap .frame{
+  position:absolute; inset:18px -18px -18px 18px; border:1.5px solid var(--gold); z-index:0;
+}
+.sobre-imgwrap img{position:relative; z-index:1; width:100%; height:560px; object-fit:cover;}
+@media(max-width:900px){.sobre-imgwrap img{height:400px;}}
+
+.sobre-text .eyebrow{margin-bottom:16px; display:block;}
+.sobre-text h2{font-size:clamp(1.9rem,3.4vw,2.6rem); margin-bottom:22px; line-height:1.2;}
+.sobre-text p{color:var(--bone-dim); margin-bottom:18px; font-size:.96rem;}
+.sobre-text p strong{color:var(--bone); font-weight:500;}
+
+.badges-row{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line);
+  margin-top:36px; border:1px solid var(--line);
+}
+.badge-item{background:var(--ink); padding:22px 18px;}
+.badge-item .num{font-family:'Cinzel',serif; font-size:1.9rem; color:var(--gold); display:block; margin-bottom:6px;}
+.badge-item .lbl{font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:var(--bone-dim);}
+@media(max-width:560px){.badges-row{grid-template-columns:1fr 1fr;}}
+
+.pros-split{
+  display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:40px;
+}
+@media(max-width:560px){.pros-split{grid-template-columns:1fr;}}
+.pro-mini{border:1px solid var(--line); padding:22px;}
+.pro-mini .diamond-badge{margin-bottom:14px;}
+.pro-mini b{display:block; font-family:'Cinzel',serif; font-size:1rem; margin-bottom:6px;}
+.pro-mini p{font-size:.84rem; color:var(--bone-dim); margin:0;}
+
+/* ============ DEPOIMENTOS ============ */
+.depoimentos{background:var(--ink-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.dep-head{text-align:center; max-width:600px; margin:0 auto 56px;}
+.dep-head .section-label{justify-content:center;}
+.dep-head h2{font-size:clamp(1.9rem,3.4vw,2.6rem);}
+.dep-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+@media(max-width:900px){.dep-grid{grid-template-columns:1fr; max-width:480px; margin:0 auto;}}
+.dep-card{
+  background:var(--ink); border:1px solid var(--line); padding:32px 28px; position:relative;
+}
+.dep-quote{font-size:1.6rem; color:var(--gold); font-family:'Cinzel',serif; line-height:1; margin-bottom:14px;}
+.dep-card p{font-size:.92rem; color:var(--bone-dim); margin-bottom:22px; min-height:96px;}
+.dep-person{display:flex; align-items:center; gap:12px;}
+.dep-person img{width:44px; height:44px; border-radius:50%; object-fit:cover; border:1px solid var(--gold);}
+.dep-person b{display:block; font-size:.86rem; font-weight:500;}
+.dep-person small{font-size:.7rem; color:var(--bone-dim); text-transform:uppercase; letter-spacing:.06em;}
+.dep-stars{color:var(--gold); font-size:.78rem; letter-spacing:2px; margin-top:2px;}
+.dep-note{text-align:center; margin-top:30px; font-size:.78rem; color:var(--bone-dim); font-style:italic; opacity:.7;}
+
+/* ============ CONTATO ============ */
+.contato{background:var(--ink);}
+.contato-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:stretch;}
+@media(max-width:900px){.contato-grid{grid-template-columns:1fr;}}
+.contato-info h2{font-size:clamp(1.9rem,3.4vw,2.6rem); margin-bottom:20px;}
+.contato-info > p{color:var(--bone-dim); margin-bottom:36px; font-size:.96rem;}
+.info-list{display:flex; flex-direction:column; gap:26px; margin-bottom:40px;}
+.info-item{display:flex; gap:18px;}
+.info-item .ic{
+  width:44px; height:44px; border:1px solid var(--gold); border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+}
+.info-item .ic svg{width:18px; height:18px; stroke:var(--gold);}
+.info-item b{display:block; font-family:'Cinzel',serif; font-size:.9rem; margin-bottom:4px;}
+.info-item span{font-size:.86rem; color:var(--bone-dim);}
+.contato-actions{display:flex; gap:16px; flex-wrap:wrap;}
+.map-wrap{
+  position:relative; min-height:420px; border:1px solid var(--line); overflow:hidden;
+}
+.map-wrap iframe{position:absolute; inset:0; width:100%; height:100%; border:0; filter:grayscale(.4) invert(.92) contrast(.9);}
+
+/* ============ FOOTER ============ */
+footer{background:var(--ink-2); border-top:1px solid var(--line); padding:70px 0 30px;}
+.footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:50px; margin-bottom:60px;}
+@media(max-width:860px){.footer-grid{grid-template-columns:1fr 1fr; row-gap:40px;}}
+@media(max-width:520px){.footer-grid{grid-template-columns:1fr;}}
+.footer-brand .logo{margin-bottom:18px;}
+.footer-brand p{color:var(--bone-dim); font-size:.86rem; max-width:280px;}
+footer h4{font-size:.78rem; text-transform:uppercase; letter-spacing:.12em; color:var(--gold); margin-bottom:20px; font-family:'Jost',sans-serif; font-weight:500;}
+.footer-links{display:flex; flex-direction:column; gap:12px;}
+.footer-links a{font-size:.86rem; color:var(--bone-dim); transition:color .3s;}
+.footer-links a:hover{color:var(--gold-light);}
+.footer-social{display:flex; gap:12px; margin-top:6px;}
+.footer-bottom{
+  border-top:1px solid var(--line); padding-top:26px; display:flex; justify-content:space-between;
+  flex-wrap:wrap; gap:12px; font-size:.76rem; color:var(--bone-dim);
+}
+
+/* floating whatsapp */
+.float-wa{
+  position:fixed; right:26px; bottom:26px; z-index:150; width:58px; height:58px; border-radius:50%;
+  background:var(--gold); display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow);
+  transition:transform .3s var(--ease);
+}
+.float-wa:hover{transform:scale(1.08);}
+.float-wa svg{width:26px; height:26px; stroke:var(--ink);}
+
+.reveal{opacity:0; transform:translateY(26px); transition:opacity .8s var(--ease), transform .8s var(--ease);}
+.reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header id="siteHeader">
+  <div class="container">
+    <a href="#inicio" class="logo">
+      <div class="logo-mark"><span>WM</span></div>
+      <div class="logo-text">WM Tattoo Studio<small>Barretos · SP</small></div>
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="#inicio">Início</a>
+      <a href="#estudio">Estúdio</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#depoimentos">Depoimentos</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <div class="header-icons">
+      <a class="icon-btn" href="https://wa.me/5517992176906" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M20.5 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3.5 20.5l1.4-4.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="icon-btn" href="https://www.instagram.com/wedson_wmtattoostudio/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+      </a>
+      <a class="icon-btn" href="https://www.google.com/maps/search/?api=1&query=Rua+NBT16+Mario+Caiel+365+Nova+Barretos+3+Barretos+SP" target="_blank" rel="noopener" aria-label="Localização">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M20 10.5c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10.5" r="2.6"/></svg>
+      </a>
+    </div>
+    <div class="burger" id="burger"><span></span><span></span><span></span></div>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#inicio">Início</a>
+  <a href="#estudio">Estúdio</a>
+  <a href="#servicos">Serviços</a>
+  <a href="#sobre">Sobre</a>
+  <a href="#depoimentos">Depoimentos</a>
+  <a href="#contato">Contato</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg">
+    <img src="assets/hero-entrada.jpg" alt="Recepção do WM Tattoo Studio, com sofás em couro, parede de tijolinho e máscaras de samurai na parede">
+  </div>
+  <div class="container hero-content">
+    <div class="eyebrow">ESTÚDIO DE TATUAGEM &amp; PIERCING · BARRETOS/SP</div>
+    <h1>Mais que tinta<br>é <em>vida na pele</em>.</h1>
+    <p class="lead">Um espaço pensado para transformar sua história em arte — tatuagem e piercing com biossegurança, conforto e um atendimento pensado para você, do primeiro traço à cicatrização.</p>
+    <div class="hero-services">
+      <span>Realismo P&B</span>
+      <span>Realismo Colorido</span>
+      <span>Neotradicional</span>
+      <span>Fine Line</span>
+      <span>Piercing</span>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-gold" href="https://wa.me/5517992176906" target="_blank" rel="noopener">
+        Saiba mais
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20.5 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3.5 20.5l1.4-4.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="#servicos">
+        Ver galeria
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="line"></div>
+    <span>Role para explorar</span>
+  </div>
+</section>
+
+<div class="brick-divider"></div>
+
+<!-- ============ ESTÚDIO ============ -->
+<section class="estudio pad" id="estudio">
+  <div class="container">
+    <div class="estudio-intro">
+      <div>
+        <div class="section-label"><div class="rule"></div><span class="eyebrow">Nosso espaço</span></div>
+        <h2>Um estúdio construído para <em style="color:var(--gold-light); font-style:italic;">acolher</em>.</h2>
+      </div>
+      <p>Pé-direito duplo, escadaria em mármore e ferro, lustre de cristal, vitrines iluminadas e uma curadoria de peças que conta a história de cada tatuagem feita aqui. Estrutura moderna e confortável, preparada para oferecer bem-estar, privacidade e segurança em cada visita.</p>
+    </div>
+
+    <div class="estudio-grid" id="estudioGrid">
+      <figure class="g-a" data-full="assets/estudio-escadaria.jpg" data-cap="Escadaria principal|Mármore, ferro e um lustre de cristal que atravessa o pé-direito duplo.">
+        <img src="assets/estudio-escadaria.jpg" alt="Escadaria com lustre de cristal">
+        <figcaption><b>Escadaria principal</b>Mármore, ferro e cristal atravessando o pé-direito duplo</figcaption>
+      </figure>
+      <figure class="g-b" data-full="assets/estudio-parede-tijolinho.jpg" data-cap="Parede de tijolinho|Textura artesanal que assina a identidade visual do estúdio.">
+        <img src="assets/estudio-parede-tijolinho.jpg" alt="Parede de tijolinho de terracota">
+        <figcaption><b>Parede de tijolinho</b>A textura que assina a identidade do espaço</figcaption>
+      </figure>
+      <figure class="g-c" data-full="assets/estudio-vitrine-joias.jpg" data-cap="Vitrine de joias|Peças em exposição, iluminadas e organizadas com cuidado.">
+        <img src="assets/estudio-vitrine-joias.jpg" alt="Vitrine iluminada com joias">
+        <figcaption><b>Vitrine de joias</b>Peças para piercing em exposição</figcaption>
+      </figure>
+      <figure class="g-d" data-full="assets/estudio-vitrine-noite.jpg" data-cap="Vitrine iluminada|O amarelo quente da vitrine contrasta com a escadaria em tons neutros.">
+        <img src="assets/estudio-vitrine-noite.jpg" alt="Vitrine iluminada ao lado da escada">
+        <figcaption><b>Vitrine iluminada</b>Um ponto de luz quente na escadaria</figcaption>
+      </figure>
+      <figure class="g-e" data-full="assets/estudio-caveiras.jpg" data-cap="Curadoria autoral|Peças decorativas que remetem a festivais de tatuagem e à jornada do Wedson.">
+        <img src="assets/estudio-caveiras.jpg" alt="Máscaras decorativas na parede">
+        <figcaption><b>Curadoria autoral</b>Peças de festivais de tatuagem em exposição</figcaption>
+      </figure>
+      <figure class="g-f" data-full="assets/estudio-quadro-sofas.jpg" data-cap="Sala de espera|Sofás chesterfield em couro para um momento de espera confortável.">
+        <img src="assets/estudio-quadro-sofas.jpg" alt="Sala de espera com sofás de couro">
+        <figcaption><b>Sala de espera</b>Sofás chesterfield para um momento de espera confortável</figcaption>
+      </figure>
+      <figure class="g-g" data-full="assets/estudio-lustre.jpg" data-cap="Lustre de cristal|O ponto de luz que guia o olhar por todo o pé-direito duplo.">
+        <img src="assets/estudio-lustre.jpg" alt="Lustre de cristal suspenso">
+        <figcaption><b>Lustre de cristal</b>O ponto de luz do espaço</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" id="lightboxClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg></div>
+  <div class="lightbox-nav prev" id="lightboxPrev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-nav next" id="lightboxNext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="lightbox-cap" id="lightboxCap"></div>
+</div>
+
+<!-- ============ SERVIÇOS ============ -->
+<section class="servicos pad" id="servicos">
+  <div class="container">
+    <div class="servicos-head">
+      <div>
+        <div class="section-label"><div class="rule"></div><span class="eyebrow">Portfólio</span></div>
+        <h2>Cada traço, <em style="color:var(--gold-light); font-style:italic;">uma assinatura</em>.</h2>
+      </div>
+      <p style="max-width:420px; color:var(--bone-dim); font-size:.92rem;">Dois profissionais, duas especialidades. Escolha abaixo para navegar pelos trabalhos de tatuagem do Wedson e de piercing da Marucia.</p>
+    </div>
+
+    <div class="pro-tabs">
+      <div class="pro-tab active" data-pro="wedson">
+        <div class="diamond-badge"><span>W</span></div>
+        <div class="pro-tab-name"><b>Wedson Rodrigues</b><small>Tatuagem</small></div>
+      </div>
+      <div class="pro-tab" data-pro="marucia">
+        <div class="diamond-badge"><span>M</span></div>
+        <div class="pro-tab-name"><b>Marucia</b><small>Piercing</small></div>
+      </div>
+    </div>
+
+    <div class="style-filters" id="styleFilters">
+      <div class="style-chip active" data-style="todos">Todos</div>
+      <div class="style-chip" data-style="realismo-pb">Realismo P&amp;B</div>
+      <div class="style-chip" data-style="realismo-cor">Realismo Colorido</div>
+      <div class="style-chip" data-style="neotradicional">Neotradicional</div>
+      <div class="style-chip" data-style="fine-line">Fine Line</div>
+    </div>
+
+    <div class="servicos-grid" id="servicosGrid"></div>
+    <p class="servicos-note" id="servicosNote">* Imagens ilustrativas de exemplo — em breve substituídas pelas fotos reais dos trabalhos do estúdio.</p>
+  </div>
+</section>
+
+<!-- ============ SOBRE ============ -->
+<section class="sobre pad" id="sobre">
+  <div class="container sobre-grid">
+    <div class="sobre-imgwrap reveal">
+      <div class="frame"></div>
+      <img src="assets/sala-wm-01.jpg" alt="Sala de atendimento do Wedson no WM Tattoo Studio">
+    </div>
+    <div class="sobre-text reveal">
+      <span class="eyebrow">Sobre o estúdio</span>
+      <h2>Uma trajetória que começou aos <em style="color:var(--gold-light); font-style:italic;">17 anos</em>.</h2>
+      <p><strong>Wedson Rodrigues</strong> é tatuador profissional há mais de 10 anos. O desenho sempre fez parte da sua vida, mas o contato com a tatuagem começou ainda aos 17 — na época, apenas um hobby. Com o tempo, o aperfeiçoamento veio através de workshops, cursos e da observação constante do próprio trabalho, em busca de evolução contínua, até a abertura do seu primeiro espaço.</p>
+      <p>Hoje, depois dessa trajetória, o estúdio está preparado para oferecer um atendimento diferenciado e trabalhos com excelência em diversos estilos — do realismo preto e cinza ao fine line.</p>
+      <div class="pros-split">
+        <div class="pro-mini">
+          <div class="diamond-badge small"><span>W</span></div>
+          <b>Wedson Rodrigues</b>
+          <p>Tatuador · realismo P&amp;B, realismo colorido, neotradicional, fine line e outros estilos.</p>
+        </div>
+        <div class="pro-mini">
+          <div class="diamond-badge small"><span>M</span></div>
+          <b>Marucia</b>
+          <p>Piercing · atendimento cuidadoso, com foco em biossegurança e conforto do cliente.</p>
+        </div>
+      </div>
+      <div class="badges-row">
+        <div class="badge-item"><span class="num">17</span><span class="lbl">Anos, início na tatuagem</span></div>
+        <div class="badge-item"><span class="num">10+</span><span class="lbl">Anos de profissão</span></div>
+        <div class="badge-item"><span class="num">100%</span><span class="lbl">Biossegurança</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DEPOIMENTOS ============ -->
+<section class="depoimentos pad" id="depoimentos">
+  <div class="container">
+    <div class="dep-head">
+      <div class="section-label"><div class="rule"></div><span class="eyebrow">Depoimentos</span><div class="rule"></div></div>
+      <h2>O que dizem sobre <em style="color:var(--gold-light); font-style:italic;">nós</em>.</h2>
+    </div>
+    <div class="dep-grid">
+      <div class="dep-card reveal">
+        <div class="dep-quote">"</div>
+        <p>Ambiente impecável, muita atenção aos detalhes e um resultado que superou o que eu esperava. Me senti seguro do início ao fim.</p>
+        <div class="dep-person">
+          <img src="https://placehold.co/88x88/2c2e27/c6a15b?text=JC" alt="Cliente">
+          <div><b>João Carvalho</b><small>Cliente · Realismo</small><div class="dep-stars">★★★★★</div></div>
+        </div>
+      </div>
+      <div class="dep-card reveal">
+        <div class="dep-quote">"</div>
+        <p>Fiz meu piercing com a Marucia e o cuidado foi excelente — explicou cada etapa e todo o processo de cicatrização.</p>
+        <div class="dep-person">
+          <img src="https://placehold.co/88x88/2c2e27/c6a15b?text=BL" alt="Cliente">
+          <div><b>Beatriz Lima</b><small>Cliente · Piercing</small><div class="dep-stars">★★★★★</div></div>
+        </div>
+      </div>
+      <div class="dep-card reveal">
+        <div class="dep-quote">"</div>
+        <p>O espaço é lindo e o atendimento do Wedson é muito profissional. Já é a terceira tatuagem que faço lá.</p>
+        <div class="dep-person">
+          <img src="https://placehold.co/88x88/2c2e27/c6a15b?text=RS" alt="Cliente">
+          <div><b>Rafael Souza</b><small>Cliente · Fine Line</small><div class="dep-stars">★★★★★</div></div>
+        </div>
+      </div>
+    </div>
+    <p class="dep-note">* Depoimentos de exemplo — serão substituídos por avaliações reais de clientes.</p>
+  </div>
+</section>
+
+<!-- ============ CONTATO ============ -->
+<section class="contato pad" id="contato">
+  <div class="container contato-grid">
+    <div class="contato-info reveal">
+      <span class="eyebrow">Contato</span>
+      <h2>Vamos marcar sua <em style="color:var(--gold-light); font-style:italic;">sessão</em>?</h2>
+      <p>Fale com a gente pelo WhatsApp ou venha nos visitar — ficamos na Nova Barretos 3, em Barretos/SP.</p>
+      <div class="info-list">
+        <div class="info-item">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M20 10.5c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10.5" r="2.6"/></svg></div>
+          <div><b>Endereço</b><span>Rua NBT16 Mario Caiel, 365 — Nova Barretos 3, Barretos/SP</span></div>
+        </div>
+        <div class="info-item">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M20.5 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3.5 20.5l1.4-4.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><b>WhatsApp</b><span>(17) 99217-6906</span></div>
+        </div>
+        <div class="info-item">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></div>
+          <div><b>Instagram</b><span>@wedson_wmtattoostudio · @marucia.piercer</span></div>
+        </div>
+        <div class="info-item">
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2" stroke-linecap="round"/></svg></div>
+          <div><b>Horários</b><span>A confirmar com o estúdio — em breve atualizado aqui</span></div>
+        </div>
+      </div>
+      <div class="contato-actions">
+        <a class="btn btn-gold" href="https://wa.me/5517992176906" target="_blank" rel="noopener">Agendar agora</a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Rua+NBT16+Mario+Caiel+365+Nova+Barretos+3+Barretos+SP" target="_blank" rel="noopener">Abrir no mapa</a>
+      </div>
+    </div>
+    <div class="map-wrap reveal">
+      <iframe src="https://www.google.com/maps?q=Rua+NBT16+Mario+Caiel+365+Nova+Barretos+3+Barretos+SP&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa — WM Tattoo Studio"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><div class="logo-mark"><span>WM</span></div><div class="logo-text">WM Tattoo Studio<small>Barretos · SP</small></div></div>
+        <p>Mais que tinta é vida na pele. Tatuagem e piercing com biossegurança, conforto e atendimento personalizado.</p>
+      </div>
+      <div>
+        <h4>Navegação</h4>
+        <div class="footer-links">
+          <a href="#estudio">Estúdio</a>
+          <a href="#servicos">Serviços</a>
+          <a href="#sobre">Sobre</a>
+          <a href="#depoimentos">Depoimentos</a>
+          <a href="#contato">Contato</a>
+        </div>
+      </div>
+      <div>
+        <h4>Profissionais</h4>
+        <div class="footer-links">
+          <a href="https://www.instagram.com/wedson_wmtattoostudio/" target="_blank" rel="noopener">Wedson · Tatuagem</a>
+          <a href="https://www.instagram.com/marucia.piercer/" target="_blank" rel="noopener">Marucia · Piercing</a>
+        </div>
+      </div>
+      <div>
+        <h4>Redes sociais</h4>
+        <div class="footer-social">
+          <a class="icon-btn" href="https://wa.me/5517992176906" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M20.5 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3.5 20.5l1.4-4.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          <a class="icon-btn" href="https://www.instagram.com/wedson_wmtattoostudio/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 WM Tattoo Studio. Todos os direitos reservados.</span>
+      <span>Rua NBT16 Mario Caiel, 365 — Nova Barretos 3, Barretos/SP</span>
+    </div>
+  </div>
+</footer>
+
+<a class="float-wa" href="https://wa.me/5517992176906" target="_blank" rel="noopener" aria-label="Fale no WhatsApp">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20.5 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3.5 20.5l1.4-4.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</a>
+
+<script>
+/* ===== header scroll state ===== */
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 40);
+});
+
+/* ===== mobile nav ===== */
+const burger = document.getElementById('burger');
+const mobileNav = document.getElementById('mobileNav');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  mobileNav.classList.toggle('open');
+});
+mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  burger.classList.remove('open'); mobileNav.classList.remove('open');
+}));
+
+/* ===== reveal on scroll ===== */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: .15 });
+revealEls.forEach(el => io.observe(el));
+
+/* ===== lightbox for estúdio grid ===== */
+const grid = document.getElementById('estudioGrid');
+const figures = Array.from(grid.querySelectorAll('figure'));
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxCap = document.getElementById('lightboxCap');
+let currentIdx = 0;
+
+function openLightbox(i){
+  currentIdx = i;
+  const f = figures[i];
+  const [title, desc] = (f.dataset.cap || '').split('|');
+  lightboxImg.src = f.dataset.full;
+  lightboxCap.innerHTML = `<b>${title||''}</b><br>${desc||''}`;
+  lightbox.classList.add('open');
+}
+figures.forEach((f,i) => f.addEventListener('click', () => openLightbox(i)));
+document.getElementById('lightboxClose').addEventListener('click', () => lightbox.classList.remove('open'));
+lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+document.getElementById('lightboxPrev').addEventListener('click', () => openLightbox((currentIdx-1+figures.length)%figures.length));
+document.getElementById('lightboxNext').addEventListener('click', () => openLightbox((currentIdx+1)%figures.length));
+document.addEventListener('keydown', (e) => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') lightbox.classList.remove('open');
+  if (e.key === 'ArrowLeft') openLightbox((currentIdx-1+figures.length)%figures.length);
+  if (e.key === 'ArrowRight') openLightbox((currentIdx+1)%figures.length);
+});
+
+/* ===== serviços: dados de exemplo (placehold.co) ===== */
+const WORKS = {
+  wedson: [
+    {style:'realismo-pb', title:'Retrato realista', tag:'Realismo P&B', img:'https://placehold.co/600x750/1c1b18/c6a15b?text=Realismo+P%26B'},
+    {style:'realismo-cor', title:'Composição floral', tag:'Realismo Colorido', img:'https://placehold.co/600x750/24211a/c6a15b?text=Realismo+Colorido'},
+    {style:'neotradicional', title:'Ave neotradicional', tag:'Neotradicional', img:'https://placehold.co/600x750/2c2e27/c6a15b?text=Neotradicional'},
+    {style:'fine-line', title:'Traço minimalista', tag:'Fine Line', img:'https://placehold.co/600x750/1c1b18/c6a15b?text=Fine+Line'},
+    {style:'realismo-pb', title:'Retrato animal', tag:'Realismo P&B', img:'https://placehold.co/600x750/24211a/c6a15b?text=Realismo+P%26B'},
+    {style:'realismo-cor', title:'Aquarela colorida', tag:'Realismo Colorido', img:'https://placehold.co/600x750/2c2e27/c6a15b?text=Realismo+Colorido'},
+    {style:'neotradicional', title:'Ornamental neotrad', tag:'Neotradicional', img:'https://placehold.co/600x750/1c1b18/c6a15b?text=Neotradicional'},
+    {style:'fine-line', title:'Botânica delicada', tag:'Fine Line', img:'https://placehold.co/600x750/24211a/c6a15b?text=Fine+Line'},
+  ],
+  marucia: [
+    {style:'todos', title:'Piercing de orelha', tag:'Helix', img:'https://placehold.co/600x750/1c1b18/c6a15b?text=Helix'},
+    {style:'todos', title:'Piercing labial', tag:'Labret', img:'https://placehold.co/600x750/24211a/c6a15b?text=Labret'},
+    {style:'todos', title:'Piercing nasal', tag:'Nostril', img:'https://placehold.co/600x750/2c2e27/c6a15b?text=Nostril'},
+    {style:'todos', title:'Piercing de umbigo', tag:'Navel', img:'https://placehold.co/600x750/1c1b18/c6a15b?text=Navel'},
+    {style:'todos', title:'Piercing de sobrancelha', tag:'Eyebrow', img:'https://placehold.co/600x750/24211a/c6a15b?text=Eyebrow'},
+    {style:'todos', title:'Curadoria de orelha', tag:'Ear Curation', img:'https://placehold.co/600x750/2c2e27/c6a15b?text=Ear+Curation'},
+  ]
+};
+
+const tabs = document.querySelectorAll('.pro-tab');
+const chips = document.querySelectorAll('.style-chip');
+const filtersWrap = document.getElementById('styleFilters');
+const servicosGrid = document.getElementById('servicosGrid');
+let activePro = 'wedson';
+let activeStyle = 'todos';
+
+function renderWorks(){
+  const list = WORKS[activePro].filter(w => activeStyle === 'todos' || w.style === activeStyle);
+  servicosGrid.innerHTML = list.map((w,i) => `
+    <div class="work-card" style="animation-delay:${i*0.05}s">
+      <img src="${w.img}" alt="${w.title}">
+      <div class="work-card-info"><b>${w.title}</b><small>${w.tag}</small></div>
+    </div>`).join('');
+}
+tabs.forEach(t => t.addEventListener('click', () => {
+  tabs.forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  activePro = t.dataset.pro;
+  filtersWrap.style.display = activePro === 'wedson' ? 'flex' : 'none';
+  activeStyle = 'todos';
+  chips.forEach(c => c.classList.toggle('active', c.dataset.style === 'todos'));
+  renderWorks();
+}));
+chips.forEach(c => c.addEventListener('click', () => {
+  chips.forEach(x => x.classList.remove('active'));
+  c.classList.add('active');
+  activeStyle = c.dataset.style;
+  renderWorks();
+}));
+renderWorks();
+</script>
+
+</body>
+</html>
