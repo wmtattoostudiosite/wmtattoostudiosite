@@ -6,12 +6,13 @@ import type { WorkItem } from "@/data/works";
 
 type WorksCarouselProps = {
   works: WorkItem[];
+  cardClassName?: string;
 };
 
 /**
  * Carrossel do portfólio: um trabalho por vez, com setas, dots e arraste.
  */
-export default function WorksCarousel({ works }: WorksCarouselProps) {
+export default function WorksCarousel({ works, cardClassName = "" }: WorksCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
   const dragRef = useRef({
@@ -116,7 +117,7 @@ export default function WorksCarousel({ works }: WorksCarouselProps) {
           {works.map((work, workIndex) => (
             <div
               key={`${work.title}-${workIndex}`}
-              className="work-card w-full shrink-0 snap-start"
+              className={`work-card w-full shrink-0 snap-start ${cardClassName}`.trim()}
               style={{ animationDelay: `${workIndex * 0.05}s` }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}

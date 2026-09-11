@@ -34,15 +34,21 @@ export const STUDIO_IMAGES: StudioImage[] = [
   },
   {
     src: "/images/studio/4.webp",
-    alt: "Sala de tatuagem com cadeira preta e identidade WM na parede",
-    width: 853,
-    height: 1280,
+    alt: "Vista do mezanino para a recepção, com escada de mármore, sofás chesterfield e máscaras na parede",
+    width: 1200,
+    height: 2133,
   },
   {
     src: "/images/studio/5.webp",
-    alt: "Parede com placas e esculturas de festivais de tatuagem",
-    width: 853,
-    height: 1280,
+    alt: "Sala de atendimento com maca preta, ring light e bancada de biossegurança",
+    width: 1200,
+    height: 2133,
+  },
+  {
+    src: "/images/studio/6.webp",
+    alt: "Espelho dourado refletindo a sala de atendimento, a maca e o logo MS na parede",
+    width: 1200,
+    height: 2133,
   },
   {
     src: "/images/studio/7.webp",
@@ -67,5 +73,17 @@ export const STUDIO_IMAGES: StudioImage[] = [
     alt: "Recepção com sofá de couro, vitrine iluminada e máscaras de samurai",
     width: 853,
     height: 1280,
+  },
+  {
+    src: "/images/studio/11.webp",
+    alt: "Logo MS em dourado na parede roxa, com a frase Estilo com segurança",
+    width: 1200,
+    height: 2133,
+  },
+  {
+    src: "/images/studio/12.webp",
+    alt: "Corredor com iluminação rosa, esculturas na parede e aparador de vidro",
+    width: 1200,
+    height: 2133,
   },
 ];

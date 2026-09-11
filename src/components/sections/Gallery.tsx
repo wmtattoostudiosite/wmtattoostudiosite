@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent, type PointerEven
 import Container from "@/components/ui/Container";
 import DiamondBadge from "@/components/ui/DiamondBadge";
 import SectionLabel from "@/components/ui/SectionLabel";
-import WorksCarousel from "@/components/ui/WorksCarousel";
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
 import {
   MARUCIA_FILTERS,
   PROFESSIONALS,
@@ -13,6 +13,9 @@ import {
   type ProfessionalId,
   type WorkStyle,
 } from "@/data/works";
+import WorksCarousel from "@/components/ui/WorksCarousel";
+
+const PAGE_SIZE = 8;
 
 /**
  * Portfólio com abas de profissional e filtros de estilo.
@@ -20,6 +23,7 @@ import {
 export default function Gallery() {
   const [activePro, setActivePro] = useState<ProfessionalId>("wedson");
   const [activeStyle, setActiveStyle] = useState<WorkStyle>("todos");
+  const [page, setPage] = useState(0);
 
   const filtersRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef({
@@ -39,9 +43,30 @@ export default function Gallery() {
     );
   }, [activePro, activeStyle]);
 
+  const pageCount = Math.max(1, Math.ceil(works.length / PAGE_SIZE));
+  const currentPage = Math.min(page, pageCount - 1);
+  const pagedWorks = works.slice(
+    currentPage * PAGE_SIZE,
+    currentPage * PAGE_SIZE + PAGE_SIZE,
+  );
+
   const selectProfessional = (id: ProfessionalId) => {
     setActivePro(id);
     setActiveStyle("todos");
+    setPage(0);
+  };
+
+  const selectStyle = (id: WorkStyle) => {
+    setActiveStyle(id);
+    setPage(0);
+  };
+
+  const goToPage = (next: number) => {
+    setPage(Math.min(Math.max(next, 0), pageCount - 1));
+    document.getElementById("galeria-trabalhos")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   useEffect(() => {
@@ -164,7 +189,7 @@ export default function Gallery() {
                   <button
                     key={filter.id}
                     type="button"
-                    onClick={() => setActiveStyle(filter.id)}
+                    onClick={() => selectStyle(filter.id)}
                     className={`relative z-[1] shrink-0 cursor-pointer whitespace-nowrap border px-[18px] py-2 text-[0.72rem] tracking-[0.1em] uppercase transition-all duration-300 ${isActive
                         ? "border-gold text-gold-light"
                         : "border-bone/20 text-bone-dim hover:border-gold hover:text-gold-light"
@@ -179,37 +204,75 @@ export default function Gallery() {
           <div className="pointer-events-none absolute inset-y-0 right-0 z-0 w-10 bg-gradient-to-l from-ink-2 md:hidden" />
         </div>
 
-        <div className="min-[561px]:hidden">
-          <WorksCarousel works={works} />
-        </div>
+        <div id="galeria-trabalhos" className="scroll-mt-[var(--header-height,90px)]">
+          <div className="min-[561px]:hidden">
+            <WorksCarousel
+              key={`${activePro}-${activeStyle}`}
+              works={works}
+              cardClassName={activePro === "marucia" ? "work-card-marucia" : ""}
+            />
+          </div>
 
-        <div className="hidden grid-cols-2 gap-[18px] min-[561px]:grid min-[981px]:grid-cols-4">
-          {works.map((work, index) => (
-            <div
-              key={`${work.title}-${index}`}
-              className="work-card"
-              style={{ animationDelay: `${index * 0.05}s` }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={work.img} alt={work.title} loading="lazy" decoding="async" />
-              <div className="absolute right-3.5 bottom-3 left-3.5 z-[2]">
-                <b className="block font-display text-[0.82rem] text-gold-light">
-                  {work.title}
-                </b>
-                <small className="text-[0.68rem] tracking-[0.08em] text-bone-dim uppercase">
-                  {work.tag}
-                </small>
+          <div className="hidden grid-cols-2 gap-[18px] min-[561px]:grid min-[981px]:grid-cols-4">
+            {pagedWorks.map((work, index) => (
+              <div
+                key={`${work.img}-${index}`}
+                className={`work-card ${activePro === "marucia" ? "work-card-marucia" : ""}`.trim()}
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={work.img} alt={work.title} loading="lazy" decoding="async" />
+                <div className="absolute right-3.5 bottom-3 left-3.5 z-[2]">
+                  <b className="block font-display text-[0.82rem] text-gold-light">
+                    {work.title}
+                  </b>
+                  <small className="text-[0.68rem] tracking-[0.08em] text-bone-dim uppercase">
+                    {work.tag}
+                  </small>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        {activePro === "marucia" && (
-          <p className="mt-[26px] text-[0.78rem] text-bone-dim italic opacity-75">
-            * Imagens ilustrativas de exemplo — em breve substituídas pelas fotos
-            reais dos trabalhos do estúdio.
-          </p>
-        )}
+          {pageCount > 1 && (
+            <div className="mt-9 hidden flex-wrap items-center justify-center gap-2.5 min-[561px]:flex">
+              <button
+                type="button"
+                onClick={() => goToPage(currentPage - 1)}
+                disabled={currentPage === 0}
+                aria-label="Página anterior"
+                className="flex h-10 w-10 items-center justify-center border border-bone/20 text-bone-dim transition-all duration-300 hover:border-gold hover:text-gold-light disabled:cursor-not-allowed disabled:opacity-30"
+              >
+                <ChevronLeftIcon className="h-4 w-4" />
+              </button>
+              {Array.from({ length: pageCount }, (_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => goToPage(index)}
+                  aria-label={`Página ${index + 1}`}
+                  aria-current={index === currentPage ? "page" : undefined}
+                  className={`min-w-10 cursor-pointer border px-3 py-2 text-[0.72rem] tracking-[0.1em] uppercase transition-all duration-300 ${
+                    index === currentPage
+                      ? "border-gold text-gold-light"
+                      : "border-bone/20 text-bone-dim hover:border-gold hover:text-gold-light"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => goToPage(currentPage + 1)}
+                disabled={currentPage === pageCount - 1}
+                aria-label="Próxima página"
+                className="flex h-10 w-10 items-center justify-center border border-bone/20 text-bone-dim transition-all duration-300 hover:border-gold hover:text-gold-light disabled:cursor-not-allowed disabled:opacity-30"
+              >
+                <ChevronRightIcon className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+        </div>
       </Container>
     </section>
   );

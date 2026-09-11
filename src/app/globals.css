@@ -365,6 +365,10 @@
   animation: cardIn 0.5s var(--ease-studio) forwards;
 }
 
+.work-card-marucia {
+  aspect-ratio: 940 / 1600;
+}
+
 @keyframes cardIn {
   to {
     opacity: 1;
