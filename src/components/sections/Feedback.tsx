@@ -1,13 +1,19 @@
+"use client";
+
+import { useState } from "react";
 import Container from "@/components/ui/Container";
+import Lightbox from "@/components/ui/Lightbox";
 import Reveal from "@/components/ui/Reveal";
 import SectionLabel from "@/components/ui/SectionLabel";
 import Stagger from "@/components/ui/Stagger";
 import { FEEDBACK_ITEMS } from "@/data/feedback";
 
 /**
- * Depoimentos de clientes.
+ * Depoimentos de clientes em prints, com leitura confortável e lightbox.
  */
 export default function Feedback() {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
   return (
     <section
       id="depoimentos"
@@ -24,44 +30,38 @@ export default function Feedback() {
           </div>
         </Reveal>
 
-        <Stagger className="mx-auto grid max-w-[480px] grid-cols-1 gap-6 min-[901px]:max-w-none min-[901px]:grid-cols-3 min-[901px]:gap-6">
-          {FEEDBACK_ITEMS.map((item) => (
-            <article
+        <Stagger className="mx-auto grid max-w-[820px] grid-cols-1 gap-6 min-[761px]:grid-cols-2">
+          {FEEDBACK_ITEMS.map((item, index) => (
+            <button
               key={item.id}
-              className="relative border border-line bg-ink px-7 py-8"
+              type="button"
+              onClick={() => setLightboxIndex(index)}
+              aria-label={`Abrir ${item.alt}`}
+              className="overflow-hidden border border-line bg-[#1c1c1c] text-left transition-studio hover:border-gold"
             >
-              <div className="mb-3.5 font-display text-[1.6rem] leading-none text-gold">
-                &ldquo;
-              </div>
-              <p className="mb-[22px] min-h-24 text-[0.92rem] text-bone-dim">
-                {item.text}
-              </p>
-              <div className="flex items-center gap-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.avatar}
-                  alt={item.name}
-                  className="h-11 w-11 rounded-full border border-gold object-cover"
-                />
-                <div>
-                  <b className="block text-[0.86rem] font-medium">{item.name}</b>
-                  <small className="text-[0.7rem] tracking-[0.06em] text-bone-dim uppercase">
-                    {item.role}
-                  </small>
-                  <div className="mt-0.5 text-[0.78rem] tracking-[2px] text-gold">
-                    ★★★★★
-                  </div>
-                </div>
-              </div>
-            </article>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={item.src}
+                alt={item.alt}
+                width={item.width}
+                height={item.height}
+                loading="lazy"
+                decoding="async"
+                className="h-auto w-full object-contain"
+              />
+            </button>
           ))}
         </Stagger>
-
-        <p className="mt-[30px] text-center text-[0.78rem] text-bone-dim italic opacity-70">
-          * Depoimentos de exemplo — serão substituídos por avaliações reais de
-          clientes.
-        </p>
       </Container>
+
+      {lightboxIndex !== null && (
+        <Lightbox
+          items={FEEDBACK_ITEMS}
+          index={lightboxIndex}
+          onIndexChange={setLightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
     </section>
   );
 }
