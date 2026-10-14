@@ -67,27 +67,57 @@ export const WORKS: Record<ProfessionalId, WorkItem[]> = {
   wedson: [
     {
       style: "realismo-pb",
-      title: "Retrato religioso",
+      title: "Olho e rosas",
       tag: "Realismo preto e cinza",
       img: "/images/tattoos/realismo-pb-1.webp",
     },
     {
       style: "realismo-pb",
-      title: "Lobo",
+      title: "Lobos",
       tag: "Realismo preto e cinza",
       img: "/images/tattoos/realismo-pb-2.webp",
     },
     {
       style: "realismo-pb",
-      title: "Leão",
+      title: "Retrato religioso",
       tag: "Realismo preto e cinza",
       img: "/images/tattoos/realismo-pb-3.webp",
     },
     {
       style: "realismo-pb",
-      title: "Lobos",
+      title: "Lobo",
       tag: "Realismo preto e cinza",
       img: "/images/tattoos/realismo-pb-4.webp",
+    },
+    {
+      style: "realismo-pb",
+      title: "Leão",
+      tag: "Realismo preto e cinza",
+      img: "/images/tattoos/realismo-pb-5.webp",
+    },
+    {
+      style: "realismo-pb",
+      title: "Lobos",
+      tag: "Realismo preto e cinza",
+      img: "/images/tattoos/realismo-pb-6.webp",
+    },
+    {
+      style: "realismo-pb",
+      title: "Anjo",
+      tag: "Realismo preto e cinza",
+      img: "/images/tattoos/realismo-pb-7.webp",
+    },
+    {
+      style: "realismo-pb",
+      title: "Guaxinim",
+      tag: "Realismo preto e cinza",
+      img: "/images/tattoos/realismo-pb-8.webp",
+    },
+    {
+      style: "realismo-pb",
+      title: "Cristo",
+      tag: "Realismo preto e cinza",
+      img: "/images/tattoos/realismo-pb-9.webp",
     },
     {
       style: "realismo-cor",
@@ -97,7 +127,7 @@ export const WORKS: Record<ProfessionalId, WorkItem[]> = {
     },
     {
       style: "realismo-cor",
-      title: "Tigre",
+      title: "Retrato e rosas",
       tag: "Realismo colorido",
       img: "/images/tattoos/realismo-col-2.webp",
     },
@@ -109,9 +139,27 @@ export const WORKS: Record<ProfessionalId, WorkItem[]> = {
     },
     {
       style: "realismo-cor",
-      title: "Vampiro",
+      title: "Retrato em sessão",
       tag: "Realismo colorido",
       img: "/images/tattoos/realismo-col-4.webp",
+    },
+    {
+      style: "realismo-cor",
+      title: "Vampiro",
+      tag: "Realismo colorido",
+      img: "/images/tattoos/realismo-col-5.webp",
+    },
+    {
+      style: "realismo-cor",
+      title: "Retrato",
+      tag: "Realismo colorido",
+      img: "/images/tattoos/realismo-col-6.webp",
+    },
+    {
+      style: "realismo-cor",
+      title: "Bombeiro",
+      tag: "Realismo colorido",
+      img: "/images/tattoos/realismo-col-7.webp",
     },
     {
       style: "neotradicional",
@@ -121,9 +169,39 @@ export const WORKS: Record<ProfessionalId, WorkItem[]> = {
     },
     {
       style: "neotradicional",
-      title: "Caveira e serpente",
+      title: "Mulher com espelho",
       tag: "Neotradicional",
       img: "/images/tattoos/neotrad-2.webp",
+    },
+    {
+      style: "neotradicional",
+      title: "Violinista",
+      tag: "Neotradicional",
+      img: "/images/tattoos/neotrad-3.webp",
+    },
+    {
+      style: "neotradicional",
+      title: "Mulher com taça",
+      tag: "Neotradicional",
+      img: "/images/tattoos/neotrad-4.webp",
+    },
+    {
+      style: "neotradicional",
+      title: "Sessão neotradicional",
+      tag: "Neotradicional",
+      img: "/images/tattoos/neotrad-5.webp",
+    },
+    {
+      style: "neotradicional",
+      title: "Retrato",
+      tag: "Neotradicional",
+      img: "/images/tattoos/neotrad-6.webp",
+    },
+    {
+      style: "neotradicional",
+      title: "Caveira e serpente",
+      tag: "Neotradicional",
+      img: "/images/tattoos/neotrad-7.webp",
     },
     {
       style: "fine-line",
